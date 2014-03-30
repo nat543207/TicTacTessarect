@@ -8,7 +8,8 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
-class Player;
+#include "../headers/Player.h"
+//class Player;
 
 Player* startGame();
 void boardSetup();

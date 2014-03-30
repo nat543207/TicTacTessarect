@@ -58,6 +58,7 @@ Player* startGame()
 
 void boardSetup()
 {
+	//TODO Write this function.
 	//TODO Implement some method of generating board for n dimensions.  For now, using template in resources folder.
 //	std::fstream file;
 //	file.open("../resources/board");

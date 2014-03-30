@@ -6,16 +6,19 @@
 CPP_SRCS += \
 ../src/Engine.cpp \
 ../src/Generalization.cpp \
+../src/Player.cpp \
 ../src/Rules.cpp 
 
 OBJS += \
 ./src/Engine.o \
 ./src/Generalization.o \
+./src/Player.o \
 ./src/Rules.o 
 
 CPP_DEPS += \
 ./src/Engine.d \
 ./src/Generalization.d \
+./src/Player.d \
 ./src/Rules.d 
 
 
