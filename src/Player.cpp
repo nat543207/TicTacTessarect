@@ -11,27 +11,14 @@
 #include "../headers/Rules.h"
 #include <iostream>
 
-Player::Player() : mark('\0'), opponent(this), id(0) {};
+Player::Player() : mark('\0'), nextPlayer(this), id(0)
+{
+	occupied.push_back(0); //Stops the program from segfaulting on operator[]() call
+};
 
 Player::~Player()
 {
 	// TODO Auto-generated destructor stub
-
-}
-
-char Player::getMark()
-{
-	return this->mark;
-}
-
-Player& Player::getOpponent()
-{
-	return *(this->opponent);
-}
-
-int Player::getID()
-{
-	return this->id;
 }
 
 int Player::movesMade()
@@ -42,9 +29,7 @@ int Player::movesMade()
 bool Player::wins()
 {
 	for(int i = 0; i < this->occupied.size(); i++)
-	{
 		std::cout << this->occupied[i] << " ";
-	}
 	std::cout << std::endl;
 
 	if(sideLength <= this->occupied.size())
@@ -58,8 +43,6 @@ bool Player::wins()
 //					std::cout << this->occupied[first] << this->occupied[second] << this->occupied[third] << std::endl;
 					if((this->occupied[first] + this->occupied[second] + this->occupied[third]) == magicSum)
 						return true;
-	//				else if(p.occupied[first] == p.occupied[second] && p.occupied[second] == p.occupied[third])
-	//					return true;
 				}
 			}
 		}
@@ -67,32 +50,13 @@ bool Player::wins()
 	return false;
 }
 
-void Player::setOpponent(Player& p)
-{
-	this->opponent = &p;
-}
-
-void Player::setMark(char c)
-{
-	this->mark = c;
-}
-
-void Player::setID(int id)
-{
-	this->id = id;
-}
-
-int Player::operator[](int i)
-{
-	return this->occupied[i];
-}
-
-void Player::makeMove(int* move)
+void Player::makeMove()
 {
 	int moveInArray = 1;
+
 	do
 	{
-		getPlayerMove();
+		int* move = getMoveCoordinates();
 		//TODO Sanitize input!!!
 		for(int i = dimensions - 1; 0 < i; i--)
 			moveInArray *= (move[i] - 1) * sideLength;
@@ -102,27 +66,10 @@ void Player::makeMove(int* move)
 
 	this->addToMoveHistory(moveInArray);
 //	this->addToBoard(moveInArray);
-	delete move;
 }
 
 void Player::addToMoveHistory(const int move)
 {
 	unsigned* ptr = &magicSquare[0];
 	this->occupied.push_back(*(ptr + move));
-}
-
-void Player::addToBoard(const int move)
-{
-//	std::fstream board;
-//	board.open("../resources/board.default");
-//	const char* file = "../resources/board.default";
-//	const char* mode = "r";
-//	int j = 0;
-//	for(int i = 0; i < move; j++)
-//	{
-//		//TODO Get each character sequentially (may skip whitespace), count the number of delimiter ('?') characters
-//		if(std::fgetc(fopen(file, mode)) == '?')
-//			i++;
-//	}
-	//TODO Assign character in position the mark of the current player
 }

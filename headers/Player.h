@@ -15,25 +15,23 @@ class Player
 	private:
 		std::vector<int> occupied;
 		char mark;
-		Player* opponent;
-		int id;
+		Player* nextPlayer;
+		unsigned id;
 	public:
 		Player();
 		virtual ~Player();
-		Player(char);
-		Player(char, Player&);
-		char getMark();
-		Player& getOpponent();
-		int getID();
+		char getMark()				{return this->mark;}
+		Player& getNextOpponent()	{return *(this->nextPlayer);}
+		unsigned getID()			{return this->id;}
+		int operator[](int i) 		{return this->occupied[i];}
+		void setOpponent(Player& p)	{this->nextPlayer = &p;}
+		void setMark(char a)		{this->mark = a;}
+		void setID(int i)		 	{this->id = i;}
 		int movesMade();
 		bool wins();
-		void setOpponent(Player&);
-		void setMark(char);
-		int operator[](int);
-		void makeMove(int*);
+		void makeMove();
 		void addToMoveHistory(const int);
 		void addToBoard(const int);
-		void setID(int);
 };
 
 #endif /* PLAYER_H_ */
