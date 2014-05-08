@@ -15,7 +15,7 @@ Player* startGame();
 void boardSetup();
 char gameLoop(Player*);
 void endGame();
-int* getMoveCoordinates();
+int* text_getMoveCoordinates();
 
 
 #endif /* ENGINE_H_ */

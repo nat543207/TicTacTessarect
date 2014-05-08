@@ -9,29 +9,32 @@
 #define PLAYER_H_
 
 #include <vector>
+#include "UI.h"
 
 class Player
 {
 	private:
-		std::vector<int> occupied;
+		std::vector<unsigned> occupied;
 		char mark;
 		Player* nextPlayer;
 		unsigned id;
+		static UI_Handler ui;
 	public:
 		Player();
 		virtual ~Player();
+
 		char getMark()				{return this->mark;}
 		Player& getNextOpponent()	{return *(this->nextPlayer);}
 		unsigned getID()			{return this->id;}
 		int operator[](int i) 		{return this->occupied[i];}
-		void setOpponent(Player& p)	{this->nextPlayer = &p;}
+		int numberOfMovesMade()		{return this->occupied.size();}
+		void setNextPlayer(Player& p)	{this->nextPlayer = &p;}
 		void setMark(char a)		{this->mark = a;}
 		void setID(int i)		 	{this->id = i;}
-		int movesMade();
+
 		bool wins();
 		void makeMove();
 		void addToMoveHistory(const int);
-		void addToBoard(const int);
 };
 
 #endif /* PLAYER_H_ */

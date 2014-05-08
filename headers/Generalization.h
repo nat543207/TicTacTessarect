@@ -10,14 +10,14 @@
 
 #include "../headers/Player.h"
 
-extern const unsigned dimensions;
-extern const unsigned sideLength;
-extern const unsigned magicSum;
+extern unsigned dimensions;
+extern unsigned sideLength;
+extern unsigned magicSum;
 extern unsigned numberOfPlayers;
 extern unsigned magicSquare[9];
 extern unsigned turnNumber;
 extern unsigned minID;
 extern Player* currentPlayer;
-//extern Player p;
+extern Player* p;
 
 #endif /* GENERALIZATION_H_ */

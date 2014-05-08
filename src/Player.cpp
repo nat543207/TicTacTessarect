@@ -5,33 +5,33 @@
  *      Author: nat543207
  */
 
+#pragma GCC diagnostic ignored "-Wsign-compare" //I know what I'm doing with unsigneds, but thanks.
 #include "../headers/Player.h"
 #include "../headers/Generalization.h"
 #include "../headers/Engine.h"
 #include "../headers/Rules.h"
+#include "../headers/UI.h"
 #include <iostream>
+#include <cmath>
+
+
+UI_Handler Player::ui;
 
 Player::Player() : mark('\0'), nextPlayer(this), id(0)
 {
-	occupied.push_back(0); //Stops the program from segfaulting on operator[]() call
+	occupied.resize(1); //Stops the program from segfaulting on operator[]() call
 };
 
 Player::~Player()
 {
-	// TODO Auto-generated destructor stub
+
 }
 
-int Player::movesMade()
-{
-	return this->occupied.size();
-}
-
+/*
+ * Guess.
+ */
 bool Player::wins()
 {
-	for(int i = 0; i < this->occupied.size(); i++)
-		std::cout << this->occupied[i] << " ";
-	std::cout << std::endl;
-
 	if(sideLength <= this->occupied.size())
 	{
 		for(unsigned first = 0; first < this->occupied.size() - 2; first++)
@@ -40,9 +40,12 @@ bool Player::wins()
 			{
 				for(unsigned third = second + 1; third < this->occupied.size(); third++)
 				{
-//					std::cout << this->occupied[first] << this->occupied[second] << this->occupied[third] << std::endl;
 					if((this->occupied[first] + this->occupied[second] + this->occupied[third]) == magicSum)
+					{
+						//If a player has moves in their array that sum to the magic number...
+						std::cout << "Player " << this->mark << " wins!";
 						return true;
+					}
 				}
 			}
 		}
@@ -52,20 +55,11 @@ bool Player::wins()
 
 void Player::makeMove()
 {
-	int moveInArray = 1;
-
-	do
-	{
-		int* move = getMoveCoordinates();
-		//TODO Sanitize input!!!
-		for(int i = dimensions - 1; 0 < i; i--)
-			moveInArray *= (move[i] - 1) * sideLength;
-		moveInArray += (move[0] - 1);
-	}
-	while(!moveIsValid(moveInArray));
-
-	this->addToMoveHistory(moveInArray);
-//	this->addToBoard(moveInArray);
+//	int move = ui.text_getMove();
+//	this->addToMoveHistory(moveInArray);
+	for(int move = 1; move <= std::pow(sideLength, dimensions); move++)
+		ui.text_addToBoard(move);
+	ui.text_printBoard();
 }
 
 void Player::addToMoveHistory(const int move)

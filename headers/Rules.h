@@ -8,6 +8,6 @@
 #ifndef GAMEPLAY_H_
 #define GAMEPLAY_H_
 
-bool moveIsValid(int);
+bool text_spaceIsOpen(int);
 
 #endif /* GAMEPLAY_H_ */
