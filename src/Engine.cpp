@@ -34,7 +34,7 @@ int main()
 		p[i].setID(minID + i);
 	}
 
-//	do
+	do
 	{
 		if(currentPlayer->getID() == minID)
 			turnNumber++;
@@ -42,7 +42,7 @@ int main()
 		currentPlayer->makeMove();
 		currentPlayer = &(currentPlayer->getNextOpponent());
 	}
-//	while(!currentPlayer->getNextOpponent().wins());
+	while(!currentPlayer->getNextOpponent().wins());
 
 	delete[] p;
 }

@@ -55,9 +55,9 @@ bool Player::wins()
 
 void Player::makeMove()
 {
-//	int move = ui.text_getMove();
+	int move = ui.text_getMove();
 //	this->addToMoveHistory(moveInArray);
-	for(int move = 1; move <= std::pow(sideLength, dimensions); move++)
+//	for(int move = 1; move <= std::pow(sideLength, dimensions); move++)
 		ui.text_addToBoard(move);
 	ui.text_printBoard();
 }
