@@ -16,8 +16,8 @@ void configure();
 
 int main()
 {
-	UI_Handler ui;
 	configure();
+	UI_Handler ui;
 	ui.text_buildBoard(sideLength, dimensions);
 	ui.text_printBoard();
 	p = new Player[numberOfPlayers];

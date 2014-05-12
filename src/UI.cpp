@@ -14,7 +14,9 @@
 std::string UI_Handler::board_components[2][2] = 	{{" _ |", "---+"},
 													 {" _  ", "--- "}};
 
-std::string UI_Handler::board ;//= text_boardBuilder(sideLength, dimensions);
+std::string UI_Handler::board;
+
+int numberOfColumnsOfBoards, numberOfRowsOfBoards, numberOfRowsPerBoard, lengthOfBoardArray;
 
 
 void UI_Handler::text_printBoard()
@@ -27,8 +29,9 @@ int UI_Handler::text_getMove()
 	int input[dimensions];
 	int move = 1;
 
-	do
+//	do
 	{
+		this->clearInputStream(std::cin);
 		for(int i = dimensions - 1; 0 <= i; i--)
 		{
 			std::cout << "Enter coordinates of move for dimension " << i + 1 << std::endl;
@@ -45,18 +48,22 @@ int UI_Handler::text_getMove()
 				inputSuccess = true;
 			}
 			input[i] = buffer;
-			this->clearInputStream(std::cin);
 		}
 
-		for(int i = 1; i <= 9; i++)
-			text_addToBoard(i);
+//		for(int i = 1; i <= 9; i++)
+//			text_addToBoard(i);
 
-//		for(int i = dimensions - 1; 0 < i; i--)
-//			move += ((input[i]) * pow(sideLength, i - 1) * pow(2, i)) - 1;
-//			move += pow(sideLength, dimensions - 2) * input[i] * (input[i] - 1);
-//				move += input[0];
+//		move = 1 + (input[0]) + (input[1] - 1)*pow(sideLength, (numberOfColumnsOfBoards - 1)) + (input[2] - 1) * sideLength + (input[3] - 1)*pow(sideLength, (numberOfRowsOfBoards));
+
+		for(int i = 0; i < dimensions; i++)
+		{
+			if(i % 2)
+				move += (input[i] - 1) * pow(sideLength, i/*ceil(i / 2.0)*/); //fix
+			else
+				move += (input[i] - 1) * pow(sideLength, ceil(i / 2.0)/* + (i - 1)*/);
+		}
 	}
-	while(!text_moveIsValid(move));
+//	while(!text_moveIsValid(move));
 
 	return move;
 }
@@ -98,10 +105,11 @@ void UI_Handler::text_buildBoard(int sideLength, int dimensions)
 {
 	bool isGraphicalBreak = false;
 
-	int numberOfColumnsOfBoards = pow(sideLength, ceil(dimensions / 2.0) - 1),
-			numberOfRowsOfBoards = pow(sideLength, floor(dimensions / 2.0) - 1),
-			numberOfRowsPerBoard = 2 * sideLength/* - 1*/,
-			lengthOfBoardArray = numberOfRowsOfBoards * (numberOfRowsPerBoard + 1) - 1;
+	numberOfColumnsOfBoards = pow(sideLength, ceil(dimensions / 2.0) - 1);
+	numberOfRowsOfBoards = pow(sideLength, floor(dimensions / 2.0) - 1);
+	numberOfRowsPerBoard = 2 * sideLength;
+	lengthOfBoardArray = numberOfRowsOfBoards * (numberOfRowsPerBoard + 1) - 1;
+
 
 	std::string intermediateBoard[lengthOfBoardArray];
 

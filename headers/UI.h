@@ -13,7 +13,6 @@
 class UI_Handler
 {
 	private:
-//		static char board[];
 		static std::string board;
 		static std::string board_components[2][2];
 	public:
