@@ -19,22 +19,22 @@ class Player
 		Player* nextPlayer;
 		unsigned id;
 		static UI_Handler ui;
+		void addToMoveHistory(const int);
+		void recurseThroughMoveList(int, int*&);
 	public:
 		Player();
 		virtual ~Player();
 
-		char getMark()				{return this->mark;}
-		Player& getNextOpponent()	{return *(this->nextPlayer);}
-		unsigned getID()			{return this->id;}
-		int operator[](int i) 		{return this->occupied[i];}
-		int numberOfMovesMade()		{return this->occupied.size();}
+		char getMark()					{return this->mark;}
+		Player& getNextOpponent()		{return *(this->nextPlayer);}
+		unsigned getID()				{return this->id;}
+		int operator[](int i) 			{return this->occupied[i];}
+		int numberOfMovesMade()			{return this->occupied.size();}
 		void setNextPlayer(Player& p)	{this->nextPlayer = &p;}
-		void setMark(char a)		{this->mark = a;}
-		void setID(int i)		 	{this->id = i;}
-
+		void setMark(char a)			{this->mark = a;}
+		void setID(int i)		 		{this->id = i;}
 		bool wins();
 		void makeMove();
-		void addToMoveHistory(const int);
 };
 
 #endif /* PLAYER_H_ */

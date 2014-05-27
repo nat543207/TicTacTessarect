@@ -7,50 +7,74 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <cmath>
 #include "../headers/Engine.h"
 #include "../headers/Rules.h"
 #include "../headers/Generalization.h"
 #include "../headers/UI.h"
+#include "../headers/MagicSquareGenerator.h"
 
 void configure();
 
 int main()
 {
 	configure();
-	UI_Handler ui;
-	ui.text_buildBoard(sideLength, dimensions);
-	ui.text_printBoard();
+//	Magic_Cube mc(dimensions, sideLength, false, 1);
+//	for(int i = 0; i < mc.Table_Size; i++)
+//	{
+//		std::cout << mc.Lookup_Table[i] << ' ';
+//	}
 	p = new Player[numberOfPlayers];
 	currentPlayer = &p[0];
-
+	char* usedSyms = new char[numberOfPlayers];
 	for(unsigned i = 0; i < numberOfPlayers; i++)
 	{
 		//Initializer loop for each Player's instance variables
 		std::cout << "Player " << i + 1 << ", please enter the symbol that will mark your moves:" << std::endl;
-		char a;
-		std::cin >> a;
-		p[i].setMark(a);
+		char c;
+		std::cin >> c;
+		bool success = true;
+		for(int j = 0; j < i; j++)
+		{
+			if(c == usedSyms[j])
+			{
+				std::cout << "That symbol is already used.  Please enter another.";
+				success = false;
+				break;
+			}
+		}
+		if(!success)
+			continue;
+
+		p[i].setMark(c);
+		usedSyms[i] = c;
 		p[i].setNextPlayer(p[(i + 1) % numberOfPlayers]); //wraps around the end of the array, setting last Player's nextPlayer as the first Player
 		p[i].setID(minID + i);
 	}
+	delete[] usedSyms;
 
-	do
+	UI_Handler ui;
+	ui.text_buildBoard(sideLength, dimensions);
+	ui.text_printBoard();
+
+	while(true)
 	{
 		if(currentPlayer->getID() == minID)
 			turnNumber++;
 		std::cout << "Player " << currentPlayer->getMark() << " to move." << std::endl;
 		currentPlayer->makeMove();
+		if(currentPlayer->wins())
+			break;
 		currentPlayer = &(currentPlayer->getNextOpponent());
 	}
-	while(!currentPlayer->getNextOpponent().wins());
-
 	delete[] p;
+
+	std::cout << "Player " << currentPlayer->getMark() << " wins!";
 }
 
 void configure()
 {
 	bool cfg_success = false;
-	int cfg_vals[3];
 
 	while(!cfg_success)
 	{
@@ -58,7 +82,7 @@ void configure()
 				"an existing configuration.  Customize? (y/N):  ";
 
 		std::string cfg_opt;
-		getline(std::cin, cfg_opt);
+		std::cin >> cfg_opt;
 
 		switch(cfg_opt[0])
 		{
@@ -68,14 +92,13 @@ void configure()
 			{
 				std::cout << "\nEnter the number of the configuration you'd like to play:\n"
 						"1:  3x3 2-player game\n"
-						"2:  5x5 2-player game\n"
-						"3:  5x5x5x5 2-player game\n"
-						"4:  5x5x5x5 4-player game\n";
+						"2:  3x3x3 2-player game\n"
+						"3:  3x3x3 3-player game\n"
+						"4:  3x3x3x3 3-player game\n";
 
-				std::string cfg_num;
-				std::cin >> cfg_num;
+				std::cin >> cfg_opt; //Sanitize
 
-				switch(cfg_num[0])
+				switch(cfg_opt[0])
 				{
 					case '1':
 						numberOfPlayers = 2;
@@ -84,21 +107,21 @@ void configure()
 						break;
 					case '2':
 						numberOfPlayers = 2;
-						sideLength = 5;
-						dimensions = 2;
+						sideLength = 3;
+						dimensions = 3;
 						break;
 					case '3':
-						numberOfPlayers = 2;
-						sideLength = 5;
-						dimensions = 4;
+						numberOfPlayers = 3;
+						sideLength = 3;
+						dimensions = 3;
 						break;
 					case '4':
-						numberOfPlayers = 4;
-						sideLength = 5;
+						numberOfPlayers = 3;
+						sideLength = 3;
 						dimensions = 4;
 						break;
 					default:
-						std::cout << "Invalid option.  Please try again.";
+						std::cout << "Invalid option.  Please retry configuration.\n\n";
 						continue;
 				}
 				cfg_success = true;
@@ -108,6 +131,7 @@ void configure()
 			case 'y':
 			case 'Y':
 			{
+				int cfg_vals[3];
 				std::string cfg_msgs[] = 	{"How many people are playing?",
 						"How many cells would you like in each row, column, and diagonal?",
 						"How many dimensions would you like the board to span?"};
@@ -140,4 +164,5 @@ void configure()
 				continue;
 		}
 	}
+	magicSum = sideLength * (pow(sideLength, dimensions) + 1) / 2;
 }

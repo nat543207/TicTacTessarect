@@ -15,6 +15,7 @@ extern unsigned sideLength;
 extern unsigned magicSum;
 extern unsigned numberOfPlayers;
 extern unsigned magicSquare[9];
+extern unsigned magicTessarect[81];
 extern unsigned turnNumber;
 extern unsigned minID;
 extern Player* currentPlayer;

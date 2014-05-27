@@ -18,12 +18,10 @@ std::string UI_Handler::board;
 
 int numberOfColumnsOfBoards, numberOfRowsOfBoards, numberOfRowsPerBoard, lengthOfBoardArray;
 
-
-void UI_Handler::text_printBoard()
-{
-	std::cout << board;
-}
-
+/*
+ * Gets a user's coordinate input and converts it into a board index to be used
+ * by text_addToBoard()
+ */
 int UI_Handler::text_getMove()
 {
 	int input[dimensions];
@@ -31,36 +29,48 @@ int UI_Handler::text_getMove()
 
 //	do
 	{
-		this->clearInputStream(std::cin);
 		for(int i = dimensions - 1; 0 <= i; i--)
 		{
-			std::cout << "Enter coordinates of move for dimension " << i + 1 << std::endl;
-			int buffer;
+			if(!input[i])
+				std::cout << "Enter coordinates of move for dimension " << i + 1 << std::endl;
+			int buffer = 0;
 			for(bool inputSuccess = false; !inputSuccess;)
 			{
-				//TODO Sanitize input!!!
 				std::cin >> buffer;
-				if(buffer < 1 || sideLength < buffer) //needs to be more robust, scaling with increased numberOfRowsOfBoards
+				if(dimensions % 2)
 				{
-					std::cout << "Invalid space.  Please select a valid space.\n";
-					continue;
+					if(buffer < 1 || sideLength < buffer) //needs to be more robust, scaling with increased numberOfRowsOfBoards
+					{
+						std::cout << "Invalid coordinates, please re-enter.\n";
+						continue;
+					}
+				}
+				else
+				{
+
 				}
 				inputSuccess = true;
 			}
 			input[i] = buffer;
 		}
 
-//		for(int i = 1; i <= 9; i++)
-//			text_addToBoard(i);
-
-//		move = 1 + (input[0]) + (input[1] - 1)*pow(sideLength, (numberOfColumnsOfBoards - 1)) + (input[2] - 1) * sideLength + (input[3] - 1)*pow(sideLength, (numberOfRowsOfBoards));
-
 		for(int i = 0; i < dimensions; i++)
 		{
-			if(i % 2)
-				move += (input[i] - 1) * pow(sideLength, i/*ceil(i / 2.0)*/); //fix
+			if(dimensions % 2)
+			{
+				if(i % 2)
+					move += (input[i] - 1) * pow(sideLength, floor(dimensions / 2.0) + ceil(i / 2.0)); //last term is added to the value of ceil, scales like dimensions.  Don't know quite how yet, though
+				else
+					move += (input[i] - 1) * pow(sideLength, i / 2.0);
+
+			}
 			else
-				move += (input[i] - 1) * pow(sideLength, ceil(i / 2.0)/* + (i - 1)*/);
+			{
+				if(i % 2)
+					move += (input[i] - 1) * pow(sideLength, floor(dimensions / 2.0) + ceil(i / 2.0) - 1); //last term is added to the value of ceil, scales like dimensions.  Don't know quite how yet, though
+				else
+					move += (input[i] - 1) * pow(sideLength, i / 2.0);
+			}
 		}
 	}
 //	while(!text_moveIsValid(move));
@@ -68,6 +78,10 @@ int UI_Handler::text_getMove()
 	return move;
 }
 
+/*
+ * Checks to see if a given move is legal, e. g. if all the given coordinate values
+ * are less than the maximum values for their dimensions, if the position is already occupied, etc.
+ */
 bool UI_Handler::text_moveIsValid(int move)
 {
 	for(unsigned i = 0; i < numberOfPlayers; i++)
@@ -152,14 +166,4 @@ void UI_Handler::text_buildBoard(int sideLength, int dimensions)
 
 	for(int i = 0; i < lengthOfBoardArray; i++)
 		board.append(intermediateBoard[i]);
-}
-
-/*
- * Throws out the next 256 characters from cin.  If there are more than that, the user shouldn't be allowed
- * to use the program.
- */
-void UI_Handler::clearInputStream(std::istream &stream)
-{
-	char* trash[256];
-	stream.readsome(*trash, 256);
 }
