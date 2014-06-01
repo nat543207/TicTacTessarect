@@ -18,58 +18,58 @@ void configure();
 
 int main()
 {
-	configure();
-//	Magic_Cube mc(dimensions, sideLength, false, 1);
-//	for(int i = 0; i < mc.Table_Size; i++)
+//	configure();
+	Magic_Cube mc(dimensions, sideLength, false, 1);
+	for(int i = 0; i < mc.Table_Size; i++)
+	{
+		std::cout << mc.Lookup_Table[i] << ' ';
+	}
+//	p = new Player[numberOfPlayers];
+//	currentPlayer = &p[0];
+//	char* usedSyms = new char[numberOfPlayers];
+//	for(unsigned i = 0; i < numberOfPlayers; i++)
 //	{
-//		std::cout << mc.Lookup_Table[i] << ' ';
+//		//Initializer loop for each Player's instance variables
+//		std::cout << "Player " << i + 1 << ", please enter the symbol that will mark your moves:" << std::endl;
+//		char c;
+//		std::cin >> c;
+//		bool success = true;
+//		for(int j = 0; j < i; j++)
+//		{
+//			if(c == usedSyms[j])
+//			{
+//				std::cout << "That symbol is already used.  Please enter another.";
+//				success = false;
+//				break;
+//			}
+//		}
+//		if(!success)
+//			continue;
+//
+//		p[i].setMark(c);
+//		usedSyms[i] = c;
+//		p[i].setNextPlayer(p[(i + 1) % numberOfPlayers]); //wraps around the end of the array, setting last Player's nextPlayer as the first Player
+//		p[i].setID(minID + i);
 //	}
-	p = new Player[numberOfPlayers];
-	currentPlayer = &p[0];
-	char* usedSyms = new char[numberOfPlayers];
-	for(unsigned i = 0; i < numberOfPlayers; i++)
-	{
-		//Initializer loop for each Player's instance variables
-		std::cout << "Player " << i + 1 << ", please enter the symbol that will mark your moves:" << std::endl;
-		char c;
-		std::cin >> c;
-		bool success = true;
-		for(int j = 0; j < i; j++)
-		{
-			if(c == usedSyms[j])
-			{
-				std::cout << "That symbol is already used.  Please enter another.";
-				success = false;
-				break;
-			}
-		}
-		if(!success)
-			continue;
-
-		p[i].setMark(c);
-		usedSyms[i] = c;
-		p[i].setNextPlayer(p[(i + 1) % numberOfPlayers]); //wraps around the end of the array, setting last Player's nextPlayer as the first Player
-		p[i].setID(minID + i);
-	}
-	delete[] usedSyms;
-
-	UI_Handler ui;
-	ui.text_buildBoard(sideLength, dimensions);
-	ui.text_printBoard();
-
-	while(true)
-	{
-		if(currentPlayer->getID() == minID)
-			turnNumber++;
-		std::cout << "Player " << currentPlayer->getMark() << " to move." << std::endl;
-		currentPlayer->makeMove();
-		if(currentPlayer->wins())
-			break;
-		currentPlayer = &(currentPlayer->getNextOpponent());
-	}
-	delete[] p;
-
-	std::cout << "Player " << currentPlayer->getMark() << " wins!";
+//	delete[] usedSyms;
+//
+//	UI_Handler ui;
+//	ui.text_buildBoard(sideLength, dimensions);
+//	ui.text_printBoard();
+//
+//	while(true)
+//	{
+//		if(currentPlayer->getID() == minID)
+//			turnNumber++;
+//		std::cout << "Player " << currentPlayer->getMark() << " to move." << std::endl;
+//		currentPlayer->makeMove();
+//		if(currentPlayer->wins())
+//			break;
+//		currentPlayer = &(currentPlayer->getNextOpponent());
+//	}
+//	delete[] p;
+//
+//	std::cout << "Player " << currentPlayer->getMark() << " wins!";
 }
 
 void configure()
