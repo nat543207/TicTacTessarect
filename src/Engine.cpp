@@ -1,8 +1,11 @@
 /*
- * main.cpp
+ * Engine.cpp
  *
  *  Created on: Mar 3, 2014
  *      Author: nat543207
+ *
+ * A file that contains the game's engine and configuration methods.  Everything else is called from
+ * within here.
  */
 #include <iostream>
 #include <string>
@@ -12,18 +15,12 @@
 #include "../headers/Player.h"
 #include "../headers/Generalization.h"
 #include "../headers/UI.h"
-#include "../headers/MagicSquareGenerator.h"
 
 void configure();
 
 int main()
 {
 	configure();
-//	Magic_Cube mc(dimensions, sideLength, false, 1);
-//	for(int i = 0; i < mc.Table_Size; i++)
-//	{
-//		std::cout << mc.Lookup_Table[i] << ' ';
-//	}
 	p = new Player[numberOfPlayers];
 	currentPlayer = &p[0];
 	char* usedSyms = new char[numberOfPlayers];
@@ -77,13 +74,13 @@ int main()
 }
 
 /*
- * Allows players to customize game, eventually.  For now, it just presents them with the presets that can be played.
+ * Allows users to customize game, eventually.  For now, it just presents them with the presets that can be played.
  */
 void configure()
 {
 	bool cfg_success = false;
 
-	//Locks player in configuration menu until configuration is successful
+	//Locks user in configuration menu until configuration is successful
 	while(!cfg_success)
 	{
 		std::cout << "You can either customize your game's parameters, or select from "
@@ -92,14 +89,14 @@ void configure()
 		std::string cfg_opt;
 		std::cin >> cfg_opt;
 
-		//Checks if player wants to customize game; default is no.
+		//Checks if user wants to customize game; default is no.
 		switch(cfg_opt[0])
 		{
 			case 'n':
 			case 'N':
 			case '\0':
 			{
-				//Presents preset games that players can play
+				//Presents preset games that users can play
 				std::cout << "\nEnter the number of the configuration you'd like to play:\n"
 						"1:  3x3 2-player game\n"
 						"2:  3x3 3-player game\n"
@@ -115,21 +112,25 @@ void configure()
 						numberOfPlayers = 2;
 						sideLength = 3;
 						dimensions = 2;
+						magicArray = &magicSquare[0];
 						break;
 					case '2':
 						numberOfPlayers = 3;
 						sideLength = 3;
 						dimensions = 2;
+						magicArray = &magicSquare[0];
 						break;
 					case '3':
 						numberOfPlayers = 2;
 						sideLength = 3;
 						dimensions = 4;
+						magicArray = &magicTessarect[0];
 						break;
 					case '4':
 						numberOfPlayers = 3;
 						sideLength = 3;
 						dimensions = 4;
+						magicArray = &magicTessarect[0];
 						break;
 					default:
 						std::cout << "Invalid option.  Please retry configuration.\n\n";
@@ -141,40 +142,13 @@ void configure()
 
 			case 'y':
 			case 'Y':
-			{
 				std::cout << "Feature not yet supported.  Please choose from one of the available presets.\n";
-//				int cfg_vals[3];
-//				std::string cfg_msgs[] = 	{"How many people are playing?",
-//						"How many cells would you like in each row, column, and diagonal?",
-//						"How many dimensions would you like the board to span?"};
-//
-//				while(!cfg_success)
-//				{
-//					for(int i = 0; i < 3; i++)
-//					{
-//						std::cout << cfg_msgs[i] << std::endl;
-//						std::cin >> cfg_vals[i];
-//					}
-//
-//					try
-//					{
-//						numberOfPlayers = cfg_vals[0];
-//						sideLength = cfg_vals[1];
-//						dimensions = cfg_vals[2];
-//					}
-//					catch(std::exception &e)
-//					{
-//						std::cout << "I'm sorry, but one of the values that you entered invalid.  Please try again." << std::endl;
-//						continue;
-//					}
-//					cfg_success = true;
-//				}
 				break;
-			}
 			default:
 				std::cout << "I'm sorry, but the option you entered is invalid.  Please try again." << std::endl;
 				continue;
 		}
 	}
+	//Calculate which value will be the sum of the magic square's rows, columns, and diagonals
 	magicSum = sideLength * (pow(sideLength, dimensions) + 1) / 2;
 }

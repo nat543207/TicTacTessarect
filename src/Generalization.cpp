@@ -4,12 +4,11 @@
  *  Created on: Mar 15, 2014
  *      Author: nat543207
  *
- *      Global variables.  Consts need to be renamed to follow C++ naming conventions, but until I get the bugs ironed out
- *      so that the program compiles, I'm not messing with it.  Also, I don't know what I'm doing with extern except that
- *      it lets me declare the variables here and access them everywhere else by including the headder.
+ *      Global variables used throughout the program.  Move along, nothing to see here.
  */
 #include "../headers/Generalization.h"
 
+unsigned* magicArray = &magicSquare[0];
 unsigned numberOfPlayers = 0;
 unsigned sideLength = 3;
 unsigned dimensions = 2;

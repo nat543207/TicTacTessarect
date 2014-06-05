@@ -18,6 +18,7 @@ extern unsigned magicSquare[9];
 extern unsigned magicTessarect[81];
 extern unsigned turnNumber;
 extern unsigned minID;
+extern unsigned* magicArray;
 extern Player* currentPlayer;
 extern Player* p;
 

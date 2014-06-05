@@ -3,13 +3,15 @@
  *
  *  Created on: Mar 30, 2014
  *      Author: nat543207
+ *
+ * A class that stores a single player's information, including what moves they've made, their mark
+ * on the board, etc.
  */
 
 #pragma GCC diagnostic ignored "-Wsign-compare" //I know what I'm doing with unsigneds, but thanks.
 #include "../headers/Player.h"
 #include "../headers/Generalization.h"
 #include "../headers/Engine.h"
-#include "../headers/Rules.h"
 #include "../headers/UI.h"
 #include <iostream>
 #include <cmath>
@@ -27,15 +29,9 @@ Player::~Player()
 
 }
 
-void Player::recurseThroughMoveList(int number, int* &values)
-{
-	for(int i = sideLength - number; i < this->occupied.size() - number; i++)
-	{
-		recurseThroughMoveList(number - 1, values);
-		values[i] = this->occupied[i];
-	}
-}
-
+/*
+ * Calculates a factorial.
+ */
 int factorial(int number)
 {
 	int result = 1;
@@ -46,52 +42,63 @@ int factorial(int number)
 	return result;
 }
 
+/*
+ * Calculate the number of combinations of r objects from a pool of n objects there are.
+ */
 int nCr(int n, int r)
 {
 	return factorial(n) / (factorial(n - r) * factorial(r));
 }
 
-void incrementPositionInArray(int* &index, int indexToIncrement)
+/*
+ * Moves you to the next combination of values to sum.
+ */
+void decrementPositionInArray(int* &array, int index)
 {
-	index[indexToIncrement]--;
-	if(index[indexToIncrement] == 0)
+	array[index]--;
+	if(array[index] == 0)
 	{
-		incrementPositionInArray(index, indexToIncrement - 1);
-		index[indexToIncrement] = index[indexToIncrement - 1] - 1;
+		decrementPositionInArray(array, index - 1);
+		array[index] = array[index - 1] - 1;
 	}
+
+	//Code in progress, not yet functional
+//	array[index]--;
+//	if(array[index] == array[index + 1])
+//	{
+//		incrementPositionInArray(array, index - 1);
+//		array[index] = array[index - 1] - 1;
+//	}
+
 }
 
 /*
- * REWRITE TO ACCOMODATE SIDE LENGTHS OTHER THAN THREE!
- *
  * Tells you if the current player has won by summing each value in his/her move
  * list sequentially, so that it can be determined if the magic sum has been
  * attained.
  */
 bool Player::wins()
 {
-	int* indices = new int[sideLength];
+		int* indices = new int[sideLength + 1];
+		for(int i = 0, j = occupied.size(); i <= occupied.size(); i++, j--)
+			indices[i] = j;
 
-		for(int i = 1; i <= sideLength; i++)
-			indices[i - 1] = this->occupied.size() - i;
-
-		for(int j = 0; j < nCr(this->occupied.size() - 1, sideLength); j++)
+		for(int i = nCr(occupied.size(), dimensions); 0 < i; i--)
 		{
 			int sum = 0;
 
-			for(int k = 0; k < sideLength; k++)
-			{
-				std::cout << occupied[indices[k]];
-				sum += occupied[indices[k]];
-			}
-
-			std::cout << '\n';
+			for(int j = 0; j <= dimensions; j++)
+				sum += occupied[j];
 
 			if(sum == magicSum)
-				return true;
+			{
+				delete[] indices;
+				return true; //TODO
+			}
 
-			incrementPositionInArray(indices, sideLength - 2);
+			decrementPositionInArray(indices, dimensions - 1);
 		}
+
 
 		delete[] indices;
 		return false;
@@ -114,6 +121,6 @@ void Player::makeMove()
  */
 void Player::addToMoveHistory(const int move)
 {
-	unsigned* ptr = &magicTessarect[0];
+	unsigned* ptr = &magicArray[0];
 	this->occupied.push_back(*(ptr + move));
 }

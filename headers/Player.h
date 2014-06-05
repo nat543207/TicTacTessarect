@@ -21,6 +21,7 @@ class Player
 		static UI_Handler ui;
 		void addToMoveHistory(const int);
 		void recurseThroughMoveList(int, int*&);
+		bool cycleThroughMoveArray(const std::vector<int>&);
 	public:
 		Player();
 		virtual ~Player();

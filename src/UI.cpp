@@ -3,6 +3,8 @@
  *
  *  Created on: Apr 15, 2014
  *      Author: nat543207
+ *
+ * Various methods that allow players to interface with the program, as well as the board generation methods.
  */
 
 #pragma GCC diagnostic ignored "-Wsign-compare" //I know what I'm doing with unsigneds, but thanks.
